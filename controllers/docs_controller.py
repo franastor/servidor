@@ -217,6 +217,90 @@ class DocsController:
 }</pre>
                     </div>
                 </div>
+
+                <div class="endpoint">
+                    <h3><span class="method post">POST</span> <span class="url">/scores</span></h3>
+                    <div class="description">Guarda una nueva puntuación en la base de datos</div>
+                    
+                    <h4>Headers requeridos:</h4>
+                    <div class="example">
+                        <pre>X-Master-Token: &lt;master_token&gt;</pre>
+                    </div>
+
+                    <h4>Request Body:</h4>
+                    <div class="example">
+                        <pre>{
+    "name": "string",
+    "score": number,
+    "timestamp": number,
+    "session_id": "string",
+    "game_duration": number,
+    "interaction_count": number,
+    "game_version": "string"
+}</pre>
+                    </div>
+
+                    <h4>Ejemplo de uso con curl:</h4>
+                    <div class="example">
+                        <pre>curl -X POST http://localhost:5001/scores \\
+     -H "Content-Type: application/json" \\
+     -H "X-Master-Token: tu_master_token" \\
+     -d '{
+         "name": "Jugador1",
+         "score": 100,
+         "timestamp": 1709654321,
+         "session_id": "test123",
+         "game_duration": 300,
+         "interaction_count": 50,
+         "game_version": "1.0.0"
+     }'</pre>
+                    </div>
+
+                    <h4>Respuesta exitosa:</h4>
+                    <div class="response">
+                        <pre>{
+    "mensaje": "Puntuación guardada exitosamente",
+    "id": 1
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <h3><span class="method get">GET</span> <span class="url">/scores/top</span></h3>
+                    <div class="description">Obtiene las 10 mejores puntuaciones</div>
+                    
+                    <h4>Headers requeridos:</h4>
+                    <div class="example">
+                        <pre>X-Master-Token: &lt;master_token&gt;</pre>
+                    </div>
+
+                    <h4>Ejemplo de uso con curl:</h4>
+                    <div class="example">
+                        <pre>curl http://localhost:5001/scores/top \\
+     -H "X-Master-Token: tu_master_token"</pre>
+                    </div>
+
+                    <h4>Respuesta exitosa:</h4>
+                    <div class="response">
+                        <pre>{
+    "mensaje": "Top 10 puntuaciones",
+    "scores": [
+        {
+            "name": "Player 1",
+            "score": 100,
+            "timestamp": 1709654321,
+            "session_id": "test123",
+            "game_duration": 300,
+            "interaction_count": 50,
+            "game_version": "1.0.0",
+            "platform": "Chrome",
+            "user_agent": "Mozilla/5.0",
+            "created_at": "2024-03-05T12:00:00"
+        }
+    ]
+}</pre>
+                    </div>
+                </div>
             </div>
 
             <div class="section">
