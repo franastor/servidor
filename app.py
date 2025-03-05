@@ -5,11 +5,16 @@ import os
 from controllers.basic_controller import BasicController
 from controllers.auth_controller import AuthController
 from controllers.docs_controller import DocsController
+from controllers.score_controller import ScoreController
 from controllers.database import get_db_connection
 from datetime import datetime
 
 # Cargar variables de entorno
-load_dotenv()
+load_dotenv(override=True)
+
+# Verificar que las variables de entorno se cargaron correctamente
+print("MASTER_TOKEN:", os.getenv('MASTER_TOKEN'))
+print("JWT_SECRET_KEY:", os.getenv('JWT_SECRET_KEY'))
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
@@ -34,6 +39,10 @@ def health_check():
 # Rutas de la API
 app.add_url_rule('/login', 'login', AuthController.login, methods=['POST'])
 app.add_url_rule('/docs', 'docs', DocsController.get_docs, methods=['GET'])
+
+# Rutas de puntuaciones
+app.add_url_rule('/scores', 'save_score', ScoreController.save_score, methods=['POST'])
+app.add_url_rule('/scores/top', 'get_top_scores', ScoreController.get_top_scores, methods=['GET'])
 
 # Rutas protegidas
 app.add_url_rule('/inicio', 'inicio', BasicController.inicio, methods=['GET'])

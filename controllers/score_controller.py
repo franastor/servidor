@@ -9,8 +9,9 @@ def requires_master_token(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('X-Master-Token')
-        if not token or token != os.getenv('MASTER_TOKEN'):
-            return jsonify({"error": "Token maestro inválido o no proporcionado"}), 401
+        master_token = os.getenv('MASTER_TOKEN')
+        if not token or not master_token or token != master_token:
+            return jsonify({"error": "No autorizado"}), 401
         return f(*args, **kwargs)
     return decorated
 
