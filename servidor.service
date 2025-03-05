@@ -1,0 +1,13 @@
+[Unit]
+Description=Servidor Flask
+After=network.target
+
+[Service]
+User=tu_usuario
+WorkingDirectory=/ruta/a/tu/servidor
+Environment="PATH=/ruta/a/tu/servidor/venv/bin"
+ExecStart=/ruta/a/tu/servidor/venv/bin/python3 app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target 
