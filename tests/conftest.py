@@ -2,12 +2,19 @@ import pytest
 from flask import Flask
 from flask_jwt_extended import JWTManager, create_access_token
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
+
+# Añadir el directorio raíz al path de Python
+root_dir = Path(__file__).parent.parent
+sys.path.append(str(root_dir))
+
 from controllers.auth_controller import AuthController
 from controllers.basic_controller import BasicController
 from controllers.docs_controller import DocsController
 from controllers.score_controller import ScoreController
-from datetime import timedelta
 
 @pytest.fixture
 def app():
