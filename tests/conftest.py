@@ -11,6 +11,9 @@ from datetime import timedelta
 root_dir = Path(__file__).parent.parent
 sys.path.append(str(root_dir))
 
+# Configurar el token maestro para las pruebas
+os.environ['MASTER_TOKEN'] = 'test_master_token'
+
 from controllers.auth_controller import AuthController
 from controllers.basic_controller import BasicController
 from controllers.docs_controller import DocsController
@@ -51,4 +54,8 @@ def valid_token(app):
         return create_access_token(
             identity='usuario_prueba',
             expires_delta=timedelta(hours=1)
-        ) 
+        )
+
+@pytest.fixture
+def master_token():
+    return os.getenv('MASTER_TOKEN', 'test_master_token') 

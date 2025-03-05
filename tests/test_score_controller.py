@@ -22,13 +22,13 @@ def valid_score_data():
         "game_version": "1.0.0"
     }
 
-def test_save_score_success(client, mock_db_connection, valid_score_data):
+def test_save_score_success(client, mock_db_connection, valid_score_data, master_token):
     mock_connection, mock_cursor = mock_db_connection
     mock_cursor.lastrowid = 1
     
     with patch('controllers.score_controller.get_db_connection', return_value=mock_connection):
         response = client.post('/scores',
-            headers={'X-Master-Token': os.getenv('MASTER_TOKEN')},
+            headers={'X-Master-Token': master_token},
             json=valid_score_data
         )
         
@@ -50,32 +50,32 @@ def test_save_score_invalid_token(client, valid_score_data):
     assert response.status_code == 401
     assert 'error' in response.json
 
-def test_save_score_missing_fields(client, mock_db_connection):
+def test_save_score_missing_fields(client, mock_db_connection, master_token):
     mock_connection, _ = mock_db_connection
     
     with patch('controllers.score_controller.get_db_connection', return_value=mock_connection):
         response = client.post('/scores',
-            headers={'X-Master-Token': os.getenv('MASTER_TOKEN')},
+            headers={'X-Master-Token': master_token},
             json={"name": "Test"}
         )
         
         assert response.status_code == 400
         assert 'error' in response.json
 
-def test_save_score_db_error(client, mock_db_connection, valid_score_data):
+def test_save_score_db_error(client, mock_db_connection, valid_score_data, master_token):
     mock_connection, mock_cursor = mock_db_connection
     mock_cursor.execute.side_effect = Exception("Error de base de datos")
     
     with patch('controllers.score_controller.get_db_connection', return_value=mock_connection):
         response = client.post('/scores',
-            headers={'X-Master-Token': os.getenv('MASTER_TOKEN')},
+            headers={'X-Master-Token': master_token},
             json=valid_score_data
         )
         
         assert response.status_code == 500
         assert 'error' in response.json
 
-def test_get_top_scores_success(client, mock_db_connection):
+def test_get_top_scores_success(client, mock_db_connection, master_token):
     mock_connection, mock_cursor = mock_db_connection
     mock_scores = [
         {
@@ -95,7 +95,7 @@ def test_get_top_scores_success(client, mock_db_connection):
     
     with patch('controllers.score_controller.get_db_connection', return_value=mock_connection):
         response = client.get('/scores/top',
-            headers={'X-Master-Token': os.getenv('MASTER_TOKEN')}
+            headers={'X-Master-Token': master_token}
         )
         
         assert response.status_code == 200
@@ -115,13 +115,13 @@ def test_get_top_scores_invalid_token(client):
     assert response.status_code == 401
     assert 'error' in response.json
 
-def test_get_top_scores_db_error(client, mock_db_connection):
+def test_get_top_scores_db_error(client, mock_db_connection, master_token):
     mock_connection, mock_cursor = mock_db_connection
     mock_cursor.execute.side_effect = Exception("Error de base de datos")
     
     with patch('controllers.score_controller.get_db_connection', return_value=mock_connection):
         response = client.get('/scores/top',
-            headers={'X-Master-Token': os.getenv('MASTER_TOKEN')}
+            headers={'X-Master-Token': master_token}
         )
         
         assert response.status_code == 500
