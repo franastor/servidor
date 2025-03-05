@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
@@ -6,6 +6,7 @@ from controllers.basic_controller import BasicController
 from controllers.auth_controller import AuthController
 from controllers.docs_controller import DocsController
 from controllers.database import get_db_connection
+from datetime import datetime
 
 # Cargar variables de entorno
 load_dotenv()
@@ -15,6 +16,22 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 
 # Rutas públicas
+@app.route('/')
+def root():
+    return jsonify({
+        "message": "Nada que ver aquí... 👀",
+        "status": "404"
+    }), 404
+
+@app.route('/live')
+def health_check():
+    return jsonify({
+        "status": "alive",
+        "message": "¡El servidor está funcionando! 🚀",
+        "timestamp": datetime.now().isoformat()
+    }), 200
+
+# Rutas de la API
 app.add_url_rule('/login', 'login', AuthController.login, methods=['POST'])
 app.add_url_rule('/docs', 'docs', DocsController.get_docs, methods=['GET'])
 
