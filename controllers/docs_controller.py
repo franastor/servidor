@@ -301,6 +301,43 @@ class DocsController:
 }</pre>
                     </div>
                 </div>
+
+                <div class="endpoint">
+                    <h3><span class="method get">GET</span> <span class="url">/</span></h3>
+                    <div class="description">Endpoint raíz que devuelve un mensaje de no acceso</div>
+                    
+                    <h4>Ejemplo de uso con curl:</h4>
+                    <div class="example">
+                        <pre>curl http://localhost:5001/</pre>
+                    </div>
+
+                    <h4>Respuesta:</h4>
+                    <div class="response">
+                        <pre>{
+    "message": "Nada que ver aquí... 👀",
+    "status": "404"
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <h3><span class="method get">GET</span> <span class="url">/live</span></h3>
+                    <div class="description">Endpoint de health check para verificar el estado del servidor</div>
+                    
+                    <h4>Ejemplo de uso con curl:</h4>
+                    <div class="example">
+                        <pre>curl http://localhost:5001/live</pre>
+                    </div>
+
+                    <h4>Respuesta exitosa:</h4>
+                    <div class="response">
+                        <pre>{
+    "status": "alive",
+    "message": "¡El servidor está funcionando! 🚀",
+    "timestamp": "2024-03-05T12:00:00"
+}</pre>
+                    </div>
+                </div>
             </div>
 
             <div class="section">
