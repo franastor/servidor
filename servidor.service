@@ -3,11 +3,13 @@ Description=Servidor Flask
 After=network.target
 
 [Service]
-User=tu_usuario
-WorkingDirectory=/ruta/a/tu/servidor
-Environment="PATH=/ruta/a/tu/servidor/venv/bin"
-ExecStart=/ruta/a/tu/servidor/venv/bin/python3 app.py
+Type=simple
+User=root
+WorkingDirectory=/root/servidor
+Environment="PATH=/root/servidor/venv/bin"
+ExecStart=/root/servidor/venv/bin/python3 app.py
 Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=multi-user.target 
