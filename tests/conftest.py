@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from controllers.auth_controller import AuthController
 from controllers.basic_controller import BasicController
 from controllers.docs_controller import DocsController
+from controllers.score_controller import ScoreController
 from datetime import timedelta
 
 @pytest.fixture
@@ -21,6 +22,8 @@ def app():
     app.add_url_rule('/inicio', 'inicio', BasicController.inicio, methods=['GET'])
     app.add_url_rule('/fin', 'fin', BasicController.fin, methods=['GET'])
     app.add_url_rule('/docs', 'docs', DocsController.get_docs, methods=['GET'])
+    app.add_url_rule('/scores', 'save_score', ScoreController.save_score, methods=['POST'])
+    app.add_url_rule('/scores/top', 'get_top_scores', ScoreController.get_top_scores, methods=['GET'])
 
     return app
 
