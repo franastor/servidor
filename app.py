@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
-from flask_jwt_extended import JWTManager
+from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from controllers.basic_controller import BasicController
@@ -7,7 +8,14 @@ from controllers.auth_controller import AuthController
 from controllers.docs_controller import DocsController
 from controllers.score_controller import ScoreController
 from controllers.database import get_db_connection
-from datetime import datetime
+from datetime import datetime, timedelta
+import logging
+import mysql.connector
+from mysql.connector import Error
+
+# Configuración de logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Cargar variables de entorno
 load_dotenv(override=True)
@@ -17,7 +25,11 @@ print("MASTER_TOKEN:", os.getenv('MASTER_TOKEN'))
 print("JWT_SECRET_KEY:", os.getenv('JWT_SECRET_KEY'))
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+CORS(app)  # Habilitar CORS para todas las rutas
+
+# Configuración de JWT
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', '1234')
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 # Rutas públicas
