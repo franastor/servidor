@@ -25,7 +25,14 @@ print("MASTER_TOKEN:", os.getenv('MASTER_TOKEN'))
 print("JWT_SECRET_KEY:", os.getenv('JWT_SECRET_KEY'))
 
 app = Flask(__name__)
-CORS(app)  # Habilitar CORS para todas las rutas
+# Configuración de CORS
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:5173", "https://jatines.franastor.com"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-Master-Token"]
+    }
+})
 
 # Configuración de JWT
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', '1234')
