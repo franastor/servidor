@@ -5,19 +5,8 @@ from datetime import datetime
 import os
 from functools import wraps
 
-def requires_master_token(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('X-Master-Token')
-        master_token = os.getenv('MASTER_TOKEN')
-        if not token or not master_token or token != master_token:
-            return jsonify({"error": "No autorizado"}), 401
-        return f(*args, **kwargs)
-    return decorated
-
 class ScoreController:
     @staticmethod
-    @requires_master_token
     def save_score():
         try:
             data = request.get_json()
@@ -75,7 +64,6 @@ class ScoreController:
             return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
 
     @staticmethod
-    @requires_master_token
     def get_top_scores():
         try:
             connection = get_db_connection()
