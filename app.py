@@ -36,6 +36,73 @@ def health_check():
         "timestamp": datetime.now().isoformat()
     }), 200
 
+@app.route('/endpoints')
+def list_endpoints():
+    endpoints = {
+        "endpoints": [
+            {
+                "path": "/",
+                "method": "GET",
+                "description": "Endpoint raíz",
+                "auth_required": False
+            },
+            {
+                "path": "/live",
+                "method": "GET",
+                "description": "Health check del servidor",
+                "auth_required": False
+            },
+            {
+                "path": "/endpoints",
+                "method": "GET",
+                "description": "Lista todos los endpoints disponibles",
+                "auth_required": False
+            },
+            {
+                "path": "/login",
+                "method": "POST",
+                "description": "Autenticación de usuario",
+                "auth_required": False
+            },
+            {
+                "path": "/inicio",
+                "method": "GET",
+                "description": "Mensaje de bienvenida",
+                "auth_required": True,
+                "auth_type": "JWT"
+            },
+            {
+                "path": "/fin",
+                "method": "GET",
+                "description": "Mensaje de despedida",
+                "auth_required": True,
+                "auth_type": "JWT"
+            },
+            {
+                "path": "/docs",
+                "method": "GET",
+                "description": "Documentación de la API",
+                "auth_required": True,
+                "auth_type": "Basic"
+            },
+            {
+                "path": "/scores",
+                "method": "POST",
+                "description": "Guarda una nueva puntuación",
+                "auth_required": True,
+                "auth_type": "Master Token"
+            },
+            {
+                "path": "/scores/top",
+                "method": "GET",
+                "description": "Obtiene las 10 mejores puntuaciones",
+                "auth_required": True,
+                "auth_type": "Master Token"
+            }
+        ]
+    }
+    return jsonify(endpoints), 200
+
 # Rutas de la API
 app.add_url_rule('/login', 'login', AuthController.login, methods=['POST'])
 app.add_url_rule('/docs', 'docs', DocsController.get_docs, methods=['GET'])
