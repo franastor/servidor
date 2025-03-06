@@ -68,36 +68,31 @@ def list_endpoints():
                 "path": "/inicio",
                 "method": "GET",
                 "description": "Mensaje de bienvenida",
-                "auth_required": True,
-                "auth_type": "JWT"
+                "auth_required": True
             },
             {
                 "path": "/fin",
                 "method": "GET",
                 "description": "Mensaje de despedida",
-                "auth_required": True,
-                "auth_type": "JWT"
+                "auth_required": True
             },
             {
                 "path": "/docs",
                 "method": "GET",
                 "description": "Documentación de la API",
-                "auth_required": True,
-                "auth_type": "Basic"
+                "auth_required": True
             },
             {
                 "path": "/scores",
                 "method": "POST",
                 "description": "Guarda una nueva puntuación",
-                "auth_required": True,
-                "auth_type": "Master Token"
+                "auth_required": True
             },
             {
                 "path": "/scores/top",
                 "method": "GET",
                 "description": "Obtiene las 10 mejores puntuaciones",
-                "auth_required": True,
-                "auth_type": "Master Token"
+                "auth_required": True
             }
         ]
     }
