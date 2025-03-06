@@ -28,7 +28,7 @@ app = Flask(__name__)
 # Configuración de CORS
 CORS(app, resources={
     r"/*": {
-        "origins": ["http://localhost:5173", "https://jatines.franastor.com"],
+        "origins": "*",
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization", "X-Master-Token"]
     }
