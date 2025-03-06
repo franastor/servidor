@@ -98,4 +98,34 @@ class ScoreController:
         except Error as e:
             return jsonify({"error": f"Error en la base de datos: {str(e)}"}), 500
         except Exception as e:
+            return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
+
+    @staticmethod
+    def delete_all_scores():
+        try:
+            connection = get_db_connection()
+            if not connection:
+                return jsonify({"error": "Error de conexión a la base de datos"}), 500
+
+            cursor = connection.cursor()
+            
+            # Borrar todas las puntuaciones
+            query = "DELETE FROM scores"
+            cursor.execute(query)
+            
+            # Obtener el número de filas afectadas
+            rows_deleted = cursor.rowcount
+            
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+            return jsonify({
+                "mensaje": "Todas las puntuaciones han sido eliminadas",
+                "puntuaciones_eliminadas": rows_deleted
+            }), 200
+
+        except Error as e:
+            return jsonify({"error": f"Error en la base de datos: {str(e)}"}), 500
+        except Exception as e:
             return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500 

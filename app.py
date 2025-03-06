@@ -115,6 +115,7 @@ app.add_url_rule('/docs', 'docs', DocsController.get_docs, methods=['GET'])
 # Rutas de puntuaciones
 app.add_url_rule('/scores', 'save_score', ScoreController.save_score, methods=['POST'])
 app.add_url_rule('/scores/top', 'get_top_scores', ScoreController.get_top_scores, methods=['GET'])
+app.add_url_rule('/scores/delete-all', 'delete_all_scores', ScoreController.delete_all_scores, methods=['DELETE'])
 
 # Rutas protegidas
 app.add_url_rule('/inicio', 'inicio', BasicController.inicio, methods=['GET'])
