@@ -43,56 +43,47 @@ def list_endpoints():
             {
                 "path": "/",
                 "method": "GET",
-                "description": "Endpoint raíz",
-                "auth_required": False
+                "description": "Endpoint raíz"
             },
             {
                 "path": "/live",
                 "method": "GET",
-                "description": "Health check del servidor",
-                "auth_required": False
+                "description": "Health check del servidor"
             },
             {
                 "path": "/endpoints",
                 "method": "GET",
-                "description": "Lista todos los endpoints disponibles",
-                "auth_required": False
+                "description": "Lista todos los endpoints disponibles"
             },
             {
                 "path": "/login",
                 "method": "POST",
-                "description": "Autenticación de usuario",
-                "auth_required": False
+                "description": "Autenticación de usuario"
             },
             {
                 "path": "/inicio",
                 "method": "GET",
-                "description": "Mensaje de bienvenida",
-                "auth_required": True
+                "description": "Mensaje de bienvenida"
             },
             {
                 "path": "/fin",
                 "method": "GET",
-                "description": "Mensaje de despedida",
-                "auth_required": True
+                "description": "Mensaje de despedida"
             },
             {
                 "path": "/docs",
                 "method": "GET",
-                "description": "Documentación de la API",
-                "auth_required": True
+                "description": "Documentación de la API"
             },
             {
                 "path": "/scores",
                 "method": "POST",
-                "description": "Guarda una nueva puntuación",
-                "auth_required": True
+                "description": "Guarda una nueva puntuación"
             },
             {
                 "path": "/scores/top",
                 "method": "GET",
-                "description": "Obtiene las 10 mejores puntuaciones",
-                "auth_required": True
+                "description": "Obtiene las 10 mejores puntuaciones"
             }
         ]
     }
