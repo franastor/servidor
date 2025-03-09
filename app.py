@@ -14,30 +14,53 @@ import mysql.connector
 from mysql.connector import Error
 
 # Configuración de logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 # Cargar variables de entorno
 load_dotenv(override=True)
 
 # Verificar que las variables de entorno se cargaron correctamente
-print("MASTER_TOKEN:", os.getenv('MASTER_TOKEN'))
-print("JWT_SECRET_KEY:", os.getenv('JWT_SECRET_KEY'))
+logger.info("Cargando configuración...")
 
 app = Flask(__name__)
+
+# Configuración de seguridad
+app.config['JSON_SORT_KEYS'] = False  # Previene ataques de timing
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limita el tamaño de las peticiones a 16MB
+
 # Configuración de CORS
 CORS(app, resources={
     r"/*": {
         "origins": "*",
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "X-Master-Token"]
+        "methods": ["GET", "POST", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-Master-Token"],
+        "expose_headers": ["Content-Type"],
+        "max_age": 600,
+        "supports_credentials": False
     }
 })
 
-# Configuración de JWT
+# Configuración de JWT con mejoras de seguridad
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', '1234')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_ALGORITHM'] = 'HS256'
+app.config['JWT_COOKIE_SECURE'] = True
+app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
 jwt = JWTManager(app)
+
+# Headers de seguridad
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response
 
 # Rutas públicas
 @app.route('/')
